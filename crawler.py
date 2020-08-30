@@ -93,7 +93,7 @@ def set_driver():
     options = Options()
     options.add_argument("--log-level=3")
     options.add_argument(f"user-agent={user_agent}")
-    driver = webdriver.Chrome(executable_path="./chromedriver", options=options)
+    driver = webdriver.Chrome(options=options)
     return driver
 
 
