@@ -73,12 +73,13 @@ def scrape_hotels(no_of_rooms, no_of_nights, no_of_adults, no_of_children):
         for _ in range(no_of_adults - 1):
             driver.execute_script("arguments[0].click();", add_adults)
 
-    # add_children = driver.find_element_by_xpath("//a[@aria-label='Add Children Per Room']")
-    # if no_of_children > 0:
-    #     for _ in range(no_of_children - 1):
-    #         driver.execute_script('arguments[0].click();', add_children)
-    # child_age = driver.find_element_by_xpath("//a[@aria-label='Up Age']")
-    # child_age.click()
+    add_children = driver.find_element_by_xpath("//a[@aria-label='Add Children Per Room']")
+    if no_of_children > 0:
+        for _ in range(no_of_children):
+            driver.execute_script("arguments[0].click();", add_children)
+        sleep(0.5)
+        child_age = driver.find_element_by_xpath("//a[@aria-label='Up Age']")
+        child_age.click()
 
     sleep(2)
     edit_hotels = driver.find_element_by_xpath("//button[contains(@class,'is-roomkey')]")
