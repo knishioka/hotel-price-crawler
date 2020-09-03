@@ -1,3 +1,4 @@
+"""Collect hotel price data."""
 import argparse
 import datetime
 import logging
@@ -22,6 +23,7 @@ logger.addHandler(fh)
 
 
 def scrape_hotels(no_of_rooms, no_of_nights, no_of_adults, no_of_children):
+    """Scrape hotel sites."""
     logger.debug("Script is starting....")
     logger.info("User typing the input fields as per Requirement....")
 
@@ -88,6 +90,7 @@ def scrape_hotels(no_of_rooms, no_of_nights, no_of_adults, no_of_children):
 
 
 def set_driver():
+    """Set selenium driver."""
     ua = UserAgent()
     user_agent = ua.random
     print(f"User Agent Selected => {user_agent}")
