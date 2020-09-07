@@ -27,9 +27,33 @@ logger.addHandler(fh)
 def scrape_hotels(no_of_rooms, no_of_nights, no_of_adults, no_of_children):
     """Scrape hotel sites."""
     logger.debug("Script is starting....")
-    logger.info("User typing the input fields as per Requirement....")
 
     driver = set_driver()
+    search_with_conditions(driver, no_of_rooms, no_of_nights, no_of_adults, no_of_children)
+
+    hotels_found = driver.find_elements_by_css_selector("div[data-map]")
+    for hotel in hotels_found:
+        hotel_name = hotel.find_element_by_css_selector(".l-property-name").text.strip()
+        hotel_location = hotel.find_element_by_css_selector(".m-hotel-address").text.strip()
+        print(hotel_name, hotel_location)
+
+
+def set_driver():
+    """Set selenium driver."""
+    ua = UserAgent()
+    user_agent = ua.random
+    print(f"User Agent Selected => {user_agent}")
+    options = Options()
+    options.add_argument("--log-level=3")
+    options.add_argument(f"user-agent={user_agent}")
+    driver = webdriver.Chrome(options=options)
+    return driver
+
+
+def search_with_conditions(driver, no_of_rooms, no_of_nights, no_of_adults, no_of_children):
+    """Search hotels with conditions."""
+    logger.info("User typing the input fields as per Requirement....")
+
     wait = WebDriverWait(driver, 10)
 
     logger.debug("Executing driver to website....")
@@ -86,24 +110,6 @@ def scrape_hotels(no_of_rooms, no_of_nights, no_of_adults, no_of_children):
     edit_hotels = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(@class,'is-roomkey')]")))
     driver.execute_script("arguments[0].click();", edit_hotels)
     logger.info("Finding Hotels as per Requirements....")
-
-    hotels_found = driver.find_elements_by_css_selector("div[data-map]")
-    for hotel in hotels_found:
-        hotel_name = hotel.find_element_by_css_selector(".l-property-name").text.strip()
-        hotel_location = hotel.find_element_by_css_selector(".m-hotel-address").text.strip()
-        print(hotel_name, hotel_location)
-
-
-def set_driver():
-    """Set selenium driver."""
-    ua = UserAgent()
-    user_agent = ua.random
-    print(f"User Agent Selected => {user_agent}")
-    options = Options()
-    options.add_argument("--log-level=3")
-    options.add_argument(f"user-agent={user_agent}")
-    driver = webdriver.Chrome(options=options)
-    return driver
 
 
 if __name__ == "__main__":
