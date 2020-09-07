@@ -87,6 +87,12 @@ def scrape_hotels(no_of_rooms, no_of_nights, no_of_adults, no_of_children):
     driver.execute_script("arguments[0].click();", edit_hotels)
     logger.info("Finding Hotels as per Requirements....")
 
+    hotels_found = driver.find_elements_by_css_selector("div[data-map]")
+    for hotel in hotels_found:
+        hotel_name = hotel.find_element_by_css_selector(".l-property-name").text.strip()
+        hotel_location = hotel.find_element_by_css_selector(".m-hotel-address").text.strip()
+        print(hotel_name, hotel_location)
+
 
 def set_driver():
     """Set selenium driver."""
