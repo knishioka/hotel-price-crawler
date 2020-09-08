@@ -4,6 +4,7 @@ import datetime
 import logging
 from time import sleep
 
+from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -36,6 +37,27 @@ def scrape_hotels(no_of_rooms, no_of_nights, no_of_adults, no_of_children):
         hotel_name = hotel.find_element_by_css_selector(".l-property-name").text.strip()
         hotel_location = hotel.find_element_by_css_selector(".m-hotel-address").text.strip()
         print(hotel_name, hotel_location)
+
+        view_rates_btn = hotel.find_element_by_css_selector(".js-view-rate-btn-link.analytics-click.l-float-right")
+        driver.execute_script("arguments[0].click();", view_rates_btn)
+
+        wait = WebDriverWait(driver, 10)
+        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "table")))
+        html = BeautifulSoup(driver.page_source, "html.parser")
+        table = html.select("tbody")[0]
+        rows_found = table.select("tr.checkin-month")
+        for row in rows_found:
+            try:
+                cells = row.select("td")
+                for cell in cells:
+                    try:
+                        month = (cell.select(".l-l-display-none.t-num-month")[0].getText()).strip()
+                        day = (cell.select(".l-l-display-none.t-font-bold")[0].getText()).strip()
+                        print(month, day)
+                    except Exception:
+                        continue
+            except Exception:
+                continue
 
 
 def set_driver():
