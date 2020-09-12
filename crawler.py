@@ -68,6 +68,8 @@ def set_driver():
     options = Options()
     options.add_argument("--log-level=3")
     options.add_argument(f"user-agent={user_agent}")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--window-size=1200x600")
     driver = webdriver.Chrome(options=options)
     return driver
 
@@ -80,7 +82,6 @@ def search_with_conditions(driver, no_of_rooms, no_of_nights, no_of_adults, no_o
 
     logger.debug("Executing driver to website....")
     driver.get("https://www.marriott.com/search/default.mi")
-    driver.maximize_window()
 
     logger.info("Filling the input fields in website as per Requirement....")
 
