@@ -46,6 +46,7 @@ def scrape_hotels(no_of_rooms, no_of_nights, no_of_adults, no_of_children):
         html = BeautifulSoup(driver.page_source, "html.parser")
         table = html.select("tbody")[0]
         rows_found = table.select("tr.checkin-month")
+        print(f"Found {len(rows_found)}")
         for row in rows_found:
             try:
                 cells = row.select("td")
@@ -54,6 +55,8 @@ def scrape_hotels(no_of_rooms, no_of_nights, no_of_adults, no_of_children):
                         month = (cell.select(".l-l-display-none.t-num-month")[0].getText()).strip()
                         day = (cell.select(".l-l-display-none.t-font-bold")[0].getText()).strip()
                         print(month, day)
+                        price = cell.select("#isSubtotalView .t-font-l")[0].getText()
+                        print(hotel_name, hotel_location, price)
                     except Exception:
                         continue
             except Exception:
