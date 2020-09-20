@@ -4,8 +4,8 @@ ENV LANG C.UTF-8
 ENV APP_HOME /usr/src/app
 
 RUN mkdir -p $APP_HOME
-RUN apt-get update && apt-get install -y --no-install-recommends unzip curl wget gpg && \
-    CHROME_DRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE) && \
+RUN apt-get update && apt-get install -y --no-install-recommends unzip wget gpg && \
+    CHROME_DRIVER_VERSION=$(wget chromedriver.storage.googleapis.com/LATEST_RELEASE -qO -) && \
     wget -N "http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip" -P ~/ && \
     unzip ~/chromedriver_linux64.zip -d ~/ && \
     rm ~/chromedriver_linux64.zip && \
